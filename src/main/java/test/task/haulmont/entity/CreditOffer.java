@@ -30,5 +30,5 @@ public class CreditOffer {
     private double creditAmount;
 
 
-    private List<PaymentSchedule> paymentSchedule;
+//    private List<PaymentSchedule> paymentSchedule;
 }

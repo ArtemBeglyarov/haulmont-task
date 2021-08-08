@@ -7,5 +7,5 @@ import test.task.haulmont.entity.PaymentSchedule;
 import java.util.UUID;
 
 @Repository
-public interface PaymentScheduleRepository extends JpaRepository<PaymentSchedule, UUID> {
+public interface PaymentRepository extends JpaRepository<PaymentSchedule, UUID> {
 }

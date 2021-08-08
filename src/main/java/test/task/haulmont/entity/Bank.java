@@ -20,9 +20,9 @@ public class Bank {
     private UUID ID;
 
     private String name;
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bank", cascade = {CascadeType.MERGE , CascadeType.REMOVE})
-    private Set<Client> clients;
+//    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bank", cascade = {CascadeType.MERGE , CascadeType.REMOVE})
+//    private Set<Client> clients;
 
-    private Set<Credit> credits;
+//    private Set<Credit> credits;
 
 }

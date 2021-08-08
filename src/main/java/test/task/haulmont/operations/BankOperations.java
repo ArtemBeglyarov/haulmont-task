@@ -11,7 +11,7 @@ import java.util.UUID;
 public class BankOperations implements Operations<Bank> {
 
     @Autowired
-    BankRepository bankRepositiry;
+    BankRepository bankRepository;
 
     @Override
     public void create(Bank bank) {

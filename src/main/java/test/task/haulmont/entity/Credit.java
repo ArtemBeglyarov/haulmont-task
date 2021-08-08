@@ -32,7 +32,7 @@ public class Credit {
     private double creditPercent;
 
 
-    private Bank bank;
+//    private Bank bank;
 
-    private Set<CreditOffer> creditOffers;
+//    private Set<CreditOffer> creditOffers;
 }

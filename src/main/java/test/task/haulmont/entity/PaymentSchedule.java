@@ -36,5 +36,5 @@ public class PaymentSchedule {
     @NotNull
     private double  paymentPercent;
 
-    private CreditOffer creditOffer;
+//    private CreditOffer creditOffer;
 }
