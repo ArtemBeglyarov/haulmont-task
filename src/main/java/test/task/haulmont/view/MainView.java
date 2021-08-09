@@ -43,7 +43,7 @@ public class MainView extends UI implements ViewDisplay {
 
     private Button createNavigationButton(String caption, final String viewName) {
         Button button = new Button(caption);
-        button.addStyleName(ValoTheme.BUTTON_SMALL);
+        button.addStyleName(ValoTheme.BUTTON_QUIET);
         button.addClickListener(event -> getUI().getNavigator().navigateTo(viewName));
         return button;
     }

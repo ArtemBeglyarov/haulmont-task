@@ -22,7 +22,8 @@ public class ViewClient extends VerticalLayout implements View {
 
     @PostConstruct
     void init() {
-        vertical.addComponent(new Label("Select category"));
+        addComponent(vertical);
+        vertical.addComponent(new Label("Select category CLients"));
 //        configureButtons();
 //        configureGrid();
     }

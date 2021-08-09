@@ -1,4 +1,4 @@
-/*C12*/SET SCHEMA PUBLIC
+/*C3*/SET SCHEMA PUBLIC
 drop table if exists bank CASCADE 
 drop table if exists clients CASCADE 
 drop table if exists credit CASCADE 
@@ -11,22 +11,3 @@ create table credit_offer (id binary(255) not null, credit_amount double, client
 create table payment_schedule (id binary(255) not null, pay_day date, payment_body_credit double, payment_percent double, payment_sum double, primary key (id))
 alter table credit_offer add constraint FKkarou343ffyichgtfy8yipelm foreign key (client_id) references clients
 alter table credit_offer add constraint FKnvc9mqgyq6ptbumj35edcgf4i foreign key (credit_id) references credit
-DISCONNECT
-/*C13*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C14*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C15*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C16*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C17*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C18*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C19*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C20*/SET SCHEMA PUBLIC
-DISCONNECT
-/*C21*/SET SCHEMA PUBLIC
-DISCONNECT
