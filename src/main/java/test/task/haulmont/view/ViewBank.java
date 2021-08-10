@@ -16,7 +16,7 @@ public class ViewBank extends VerticalLayout implements View {
     @PostConstruct
     void init() {
         addComponent(vertical);
-        vertical.addComponent(new Label("Select category"));
+        vertical.addComponent(new Label("Select category Banks"));
     }
 
 

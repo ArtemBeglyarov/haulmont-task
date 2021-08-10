@@ -8,7 +8,6 @@ import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import test.task.haulmont.entity.Client;
 
 
 @Theme("valo")
@@ -20,6 +19,9 @@ public class MainView extends UI implements ViewDisplay {
     private Panel panel;
     private final Button client = createNavigationButton("Clients","Clients");
     private final Button banks = createNavigationButton("Banks","Banks");
+    private final Button credit = createNavigationButton("Credits","Credits");
+    private final Button creditOffer = createNavigationButton("Credits offers","CreditOffers");
+    private final Button paymentSchedule = createNavigationButton("Payment schedule","PaymentSchedule");
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -30,8 +32,11 @@ public class MainView extends UI implements ViewDisplay {
 
 
         HorizontalLayout buttons = new HorizontalLayout();
-        buttons.addComponent(client);
         buttons.addComponent(banks);
+        buttons.addComponent(client);
+        buttons.addComponent(credit);
+        buttons.addComponent(creditOffer);
+        buttons.addComponent(paymentSchedule);
         panel = new Panel();
 
         vertical.addComponent(buttons);

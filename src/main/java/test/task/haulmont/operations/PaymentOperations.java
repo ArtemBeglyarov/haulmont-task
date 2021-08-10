@@ -3,14 +3,15 @@ package test.task.haulmont.operations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import test.task.haulmont.entity.PaymentSchedule;
+import test.task.haulmont.repository.PaymentRepository;
 
 import java.util.UUID;
 
 @Service
-public class PaymentScheduleRepository implements Operations<PaymentSchedule>{
+public class PaymentOperations implements Operations<PaymentSchedule>{
 
     @Autowired
-    PaymentScheduleRepository paymentScheduleRepository;
+    PaymentRepository paymentRepository;
 
     @Override
     public void create(PaymentSchedule paymentSchedule) {
