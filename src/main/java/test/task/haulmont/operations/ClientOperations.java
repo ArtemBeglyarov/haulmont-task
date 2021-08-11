@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import test.task.haulmont.entity.Client;
 import test.task.haulmont.repository.ClientRepository;
-
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,6 +31,12 @@ public class ClientOperations implements Operations<Client> {
     @Override
     public void delete(UUID id) {
 
+    }
+    public List<Client> getAll(){
+        return clientRepository.findAll();
+    }
+    public void deleteAll(List<Client> clients) {
+        clientRepository.deleteAll(clients);
     }
 }
 

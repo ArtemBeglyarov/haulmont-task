@@ -31,9 +31,24 @@ public class Client {
     private String patronymic;
     @Column
     @NotNull
+    private long numberPhone;
+    @Column
+    @NotNull
     private String email;
     @NotNull
     @Column
-    private long passportID;
+    private String passportID;
 
+    @Override
+    public String toString() {
+        return "Client{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", numberPhone=" + numberPhone +
+                ", email='" + email + '\'' +
+                ", passportID=" + passportID +
+                '}';
+    }
 }
