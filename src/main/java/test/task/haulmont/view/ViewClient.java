@@ -14,43 +14,41 @@ import java.util.List;
 @SpringView(name = "Clients")
 public class ViewClient extends VerticalLayout implements View {
 
-    private Button add = new Button("add client", (e -> getUI().addWindow(createClient())));
+    private Button add;
     private Button delete;
-    private Button update = new Button("change client");
-    private Button find = new Button("find client");
+    private Button update;
+    private Button find;
     private List<Client> clients;
     private Grid<Client> grid;
 
+    TextField name;
+    TextField surname;
+    TextField patronymic;
+    TextField phone;
+    TextField email;
+    TextField passportNumber;
+
     @Autowired
     private ClientOperations clientOperations;
-    VerticalLayout vertical = new VerticalLayout();
+
     HorizontalLayout horizontalLayout = new HorizontalLayout();
 
     @PostConstruct
     void init() {
         addComponent(horizontalLayout);
-        horizontalLayout.addComponent(add);
-        horizontalLayout.addComponent(update);
-        horizontalLayout.addComponent(find);
-        horizontalLayout.addComponent(vertical);
         showAllClients();
-        delete = new Button("delete",event -> clientOperations.deleteAll(clients));
-        horizontalLayout.addComponent(delete);
+        horizontalLayout.addComponent(add = new Button("Create", (event -> getUI().addWindow(createUpdateClient()))));
+        horizontalLayout.addComponent(update = new Button("Update", event -> getUI().addWindow(createUpdateClient(clients.get(0)))));
+        horizontalLayout.addComponent(find = new Button("Find", event -> getUI().addWindow(findClient(clients.get(0)))));
+        horizontalLayout.addComponent(delete = new Button("Delete", event -> {clientOperations.deleteAll(clients);getUI().getNavigator().navigateTo("Clients");}));
     }
 
-    private Window createClient() {
-
+    private Window createUpdateClient() {
 
         Client client = new Client();
-        TextField name;
-        TextField surname;
-        TextField patronymic;
-        TextField phone;
-        TextField email;
-        TextField passportNumber;
-
         Window window = new Window("add client");
         VerticalLayout verticalWindow = new VerticalLayout();
+
         window.setContent(verticalWindow);
         verticalWindow.addComponent(name = new TextField("Name"));
         verticalWindow.addComponent(surname = new TextField("Surname"));
@@ -58,14 +56,29 @@ public class ViewClient extends VerticalLayout implements View {
         verticalWindow.addComponent(email = new TextField("Email"));
         verticalWindow.addComponent(phone = new TextField("Phone number"));
         verticalWindow.addComponent(passportNumber = new TextField("Passport number"));
+
+        return getComponents(client, window, verticalWindow, name, surname, patronymic, email, phone, passportNumber);
+    }
+
+    private Window createUpdateClient(Client client) {
+
+        Window window = new Window("Edit client");
+        VerticalLayout verticalWindow = new VerticalLayout();
+
+        window.setContent(verticalWindow);
+        verticalWindow.addComponent(name = new TextField("Name", client.getName()));
+        verticalWindow.addComponent(surname = new TextField("Surname", client.getSurname()));
+        verticalWindow.addComponent(patronymic = new TextField("Patronymic", client.getPatronymic()));
+        verticalWindow.addComponent(email = new TextField("Email", client.getEmail()));
+        verticalWindow.addComponent(phone = new TextField("Phone number", String.valueOf(client.getNumberPhone())));
+        verticalWindow.addComponent(passportNumber = new TextField("Passport number", client.getPassportID()));
+        return getComponents(client, window, verticalWindow, name, surname, patronymic, email, phone, passportNumber);
+
+    }
+
+    private Window getComponents(Client client, Window window, VerticalLayout verticalWindow, TextField name, TextField surname, TextField patronymic, TextField email, TextField phone, TextField passportNumber) {
+
         HorizontalLayout horizontalLayout = new HorizontalLayout();
-
-        client.setName(name.getValue());
-        client.setSurname(surname.getValue());
-        client.setPatronymic(patronymic.getValue());
-        client.setEmail(email.getValue());
-//       );
-
 
         horizontalLayout.addComponent(new Button("OK", event -> {
             client.setName(name.getValue());
@@ -77,56 +90,67 @@ public class ViewClient extends VerticalLayout implements View {
             System.out.println(client.toString());
             clientOperations.create(client);
             window.close();
-        }));
+            getUI().getNavigator().navigateTo("Clients");}));
+
         horizontalLayout.addComponent(new Button("CLOSE", event -> window.close()));
         verticalWindow.addComponent(horizontalLayout);
-
+        window.setModal(true);
         window.center();
         return window;
     }
+//    private Window deleteClient() {
+//        Window window = new Window("delete client");
+//        VerticalLayout verticalWindow = new VerticalLayout();
+//        window.setContent(verticalWindow);
+//        verticalWindow.addComponent(new TextField("input ID client"));
+//        HorizontalLayout horizontalLayout = new HorizontalLayout();
+//        horizontalLayout.addComponent(new Button("OK"));
+//        horizontalLayout.addComponent(new Button("CLOSE", event -> window.close()));
+//        verticalWindow.addComponent(horizontalLayout);
+//        window.center();
+//
+//        return window;
 
-    private Window deleteClient() {
-        Window window = new Window("delete client");
-        VerticalLayout verticalWindow = new VerticalLayout();
-        window.setContent(verticalWindow);
-        verticalWindow.addComponent(new TextField("input ID client"));
-        HorizontalLayout horizontalLayout = new HorizontalLayout();
-        horizontalLayout.addComponent(new Button("OK"));
-        horizontalLayout.addComponent(new Button("CLOSE", event -> window.close()));
-        verticalWindow.addComponent(horizontalLayout);
+//    }
+
+    private Window findClient(Client client) {
+
+        Window window = new Window("Client information");
+        VerticalLayout vertical = new VerticalLayout();
+
+        clientOperations.find(client.getId());
+        window.setContent(vertical);
+        vertical.addComponent(new Label("Name" + ": " + client.getName()));
+        vertical.addComponent(new Label("Surname" + ": " + client.getSurname()));
+        vertical.addComponent(new Label("Patronymic" + ": " + client.getPatronymic()));
+        vertical.addComponent(new Label("Phone number" + ": " + client.getNumberPhone()));
+        vertical.addComponent(new Label("Email" + ": " + client.getEmail()));
+        vertical.addComponent(new Label("Passport ID" + ": " + client.getPassportID()));
+        vertical.addComponent(new Button("close", event -> window.close()));
         window.center();
-
+        window.setWidth("20%");
+        window.setModal(true);
         return window;
     }
 
-    private Window updateClient() {
-        Window window = new Window("edit client");
-        return window;
-    }
-
-    private Window findClient() {
-        Window window = new Window("");
-        return window;
-    }
     private void showAllClients() {
         grid = new Grid<>(Client.class);
         grid.setItems(clientOperations.getAll());
         grid.removeAllColumns();
-        grid.setWidth("100%");
+        grid.setWidth("50%");
         grid.addColumn(Client::getName).setCaption("Name");
         grid.addColumn(Client::getSurname).setCaption("Surname");
         grid.addColumn(Client::getPatronymic).setCaption("Patronymic");
-        grid.addColumn(Client::getNumberPhone).setCaption("Phone");
-        grid.addColumn(Client::getEmail).setCaption("Email");
-        grid.addColumn(Client::getPassportID).setCaption("Passport ID");
-
+//        grid.addColumn(Client::getNumberPhone).setCaption("Phone");
+//        grid.addColumn(Client::getEmail).setCaption("Email");
+//        grid.addColumn(Client::getPassportID).setCaption("Passport ID");
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
         grid.addSelectionListener(event -> {
-        clients = new ArrayList<>(event.getAllSelectedItems());
-        delete.setEnabled(clients.size() > 0);
-//        editClientButton.setEnabled(selected.size() == 1);
-//        showListOfBanks.setEnabled(selected.size() == 1);
-        });
+            clients = new ArrayList<>(event.getAllSelectedItems());
+            delete.setEnabled(clients.size() > 0);
+            find.setEnabled(clients.size() == 1);
+            update.setEnabled(clients.size() == 1);
+            });
         addComponents(grid);
     }
 }

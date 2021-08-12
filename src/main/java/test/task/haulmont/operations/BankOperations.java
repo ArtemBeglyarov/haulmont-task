@@ -15,7 +15,7 @@ public class BankOperations implements Operations<Bank> {
 
     @Override
     public void create(Bank bank) {
-
+        bankRepository.save(bank);
     }
 
     @Override
