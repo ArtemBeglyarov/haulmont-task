@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import test.task.haulmont.entity.Bank;
 import test.task.haulmont.repository.BankRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,5 +32,11 @@ public class BankOperations implements Operations<Bank> {
     @Override
     public void delete(UUID id) {
 
+    }
+    public List<Bank> getAll(){
+        return bankRepository.findAll();
+    }
+    public void deleteAll(List<Bank> clients) {
+        bankRepository.deleteAll(clients);
     }
 }
