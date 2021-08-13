@@ -47,6 +47,15 @@ public class Client {
             inverseJoinColumns={@JoinColumn(name="bank_id")})
     private Set<Bank> banks = new HashSet<>();
 
+    public String viewNameAllBank(Set<Bank> banks) {
+        StringBuilder sb = new StringBuilder();
+        for (Bank bank : banks) {
+            sb.append(bank.getName());
+            sb.append("; ");
+
+        }
+        return String.valueOf(sb);
+    }
     @Override
     public String toString() {
         return "Client{" +

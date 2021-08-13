@@ -25,4 +25,22 @@ public class Bank {
     private Set<Client> clients ;
 //    private Set<Credit> credits;
 
+
+    public String viewNameAllBank(Set<Client> clients) {
+        StringBuilder sb = new StringBuilder();
+        for (Client k : clients) {
+            sb.append(k.getName());
+            sb.append("; ");
+
+        }
+        return String.valueOf(sb);
+    }
+    @Override
+    public String toString() {
+        return "Bank{" +
+                "ID=" + ID +
+                ", name='" + name + '\'' +
+                ", clients=" + clients +
+                '}';
+    }
 }

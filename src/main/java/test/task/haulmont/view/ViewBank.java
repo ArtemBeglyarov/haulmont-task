@@ -36,17 +36,17 @@ public class ViewBank extends VerticalLayout implements View {
     @PostConstruct
     void init() {
         addComponent(horizontalLayout);
-
-        horizontalLayout.addComponent(add = new Button("Create",(event -> getUI().addWindow( createUpdateBank()))));
+        showAllBanks();
+        horizontalLayout.addComponent(add = new Button("Create",(event -> getUI().addWindow(createUpdateBank()))));
         horizontalLayout.addComponent(update = new Button("Update", event -> getUI().addWindow(createUpdateBank(banks.get(0)))));
         horizontalLayout.addComponent(find = new Button("Find"));
-        horizontalLayout.addComponent(delete = new Button("Delete"));
+        horizontalLayout.addComponent(delete = new Button("Delete",event -> {bankOperations.deleteAll(banks);getUI().getNavigator().navigateTo("Banks");}));
     }
 
     private Window createUpdateBank() {
 
         Bank bank = new Bank();
-        Window window = new Window("Сreate Bank");
+        Window window = new Window("Create Bank");
         VerticalLayout verticalWindow = new VerticalLayout();
 
         window.setContent(verticalWindow);
@@ -84,13 +84,12 @@ public class ViewBank extends VerticalLayout implements View {
         grid.removeAllColumns();
         grid.setWidth("50%");
         grid.addColumn(Bank::getName).setCaption("Name");
-
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
         grid.addSelectionListener(event -> {
             banks = new ArrayList<>(event.getAllSelectedItems());
-            delete.setEnabled(clients.size() > 0);
-            find.setEnabled(clients.size() == 1);
-            update.setEnabled(clients.size() == 1);
+            delete.setEnabled(banks.size() > 0);
+            find.setEnabled(banks.size() == 1);
+            update.setEnabled(banks.size() == 1);
         });
         addComponents(grid);
     }
