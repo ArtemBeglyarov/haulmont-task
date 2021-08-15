@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 @Getter
 @Setter
@@ -29,6 +30,6 @@ public class CreditOffer {
     @NotNull
     private double creditAmount;
 
-
-//    private List<PaymentSchedule> paymentSchedule;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "creditOffer", cascade = CascadeType.REMOVE)
+    private List<PaymentSchedule> paymentSchedule;
 }

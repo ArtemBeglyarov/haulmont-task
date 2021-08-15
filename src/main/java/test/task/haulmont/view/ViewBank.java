@@ -39,7 +39,7 @@ public class ViewBank extends VerticalLayout implements View {
         showAllBanks();
         horizontalLayout.addComponent(add = new Button("Create",(event -> getUI().addWindow(createUpdateBank()))));
         horizontalLayout.addComponent(update = new Button("Update", event -> getUI().addWindow(createUpdateBank(banks.get(0)))));
-        horizontalLayout.addComponent(find = new Button("Find"));
+        horizontalLayout.addComponent(find = new Button("Find",event -> getUI().addWindow(findBank(banks.get(0)))));
         horizontalLayout.addComponent(delete = new Button("Delete",event -> {bankOperations.deleteAll(banks);getUI().getNavigator().navigateTo("Banks");}));
     }
 
@@ -76,6 +76,22 @@ public class ViewBank extends VerticalLayout implements View {
         verticalWindow.addComponent(horizontalLayout);
         window.setModal(true);
         window.center();
+        return window;
+    }
+    private Window findBank(Bank bank) {
+
+        Window window = new Window("Bank information");
+        VerticalLayout vertical = new VerticalLayout();
+
+        bankOperations.find(bank.getID());
+        window.setContent(vertical);
+        vertical.addComponent(new Label("Name" + ": " + bank.getName()));
+        vertical.addComponent(new Label("Credits" + ": " + bank.viewNameAllCredits(bank.getCredits())));
+        vertical.addComponent(new Label("Clients" + ": " + bank.viewNameAllClients(bank.getClients())));
+        vertical.addComponent(new Button("close", event -> window.close()));
+        window.center();
+        window.setWidth("20%");
+        window.setModal(true);
         return window;
     }
     private void showAllBanks() {

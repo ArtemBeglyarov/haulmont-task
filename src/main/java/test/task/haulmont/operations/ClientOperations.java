@@ -28,7 +28,7 @@ public class ClientOperations implements Operations<Client> {
         return null;
     }
 
-    @Override
+
     public void delete(UUID id) {
 
     }

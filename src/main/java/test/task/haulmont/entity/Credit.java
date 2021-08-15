@@ -31,8 +31,17 @@ public class Credit {
     @NotNull
     private double creditPercent;
 
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    @JoinColumn(name = "bank_id", nullable = false)
+    private Bank bank;
 
-//    private Bank bank;
+   @OneToMany(fetch = FetchType.EAGER, mappedBy = "credit", cascade ={ CascadeType.MERGE, CascadeType.REMOVE })
+    private Set<CreditOffer> creditOffers;
 
-//    private Set<CreditOffer> creditOffers;
+    public String getBankName() {
+
+        String bankName = bank.getName();
+    return bankName;
+    }
+
 }

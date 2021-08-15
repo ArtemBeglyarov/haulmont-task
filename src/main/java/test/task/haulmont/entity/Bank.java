@@ -23,12 +23,21 @@ public class Bank {
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE , CascadeType.REMOVE})
     @JoinTable (name="bank_clients", joinColumns={@JoinColumn (name="bank_id")}, inverseJoinColumns={@JoinColumn(name="client_id")})
     private Set<Client> clients ;
-//    private Set<Credit> credits;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "bank", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
+    private Set<Credit> credits;
 
-
-    public String viewNameAllBank(Set<Client> clients) {
+    public String viewNameAllClients(Set<Client> clients) {
         StringBuilder sb = new StringBuilder();
         for (Client k : clients) {
+            sb.append(k.getName());
+            sb.append("; ");
+
+        }
+        return String.valueOf(sb);
+    }
+    public String viewNameAllCredits(Set<Credit> credits) {
+        StringBuilder sb = new StringBuilder();
+        for (Credit k : credits) {
             sb.append(k.getName());
             sb.append("; ");
 

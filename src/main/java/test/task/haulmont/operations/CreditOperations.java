@@ -5,22 +5,23 @@ import org.springframework.stereotype.Service;
 import test.task.haulmont.entity.Credit;
 import test.task.haulmont.repository.CreditRepository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
-public class CreditOperations implements Operations<Credit>{
+public class CreditOperations implements Operations<Credit> {
 
     @Autowired
     CreditRepository creditRepository;
 
     @Override
     public void create(Credit credit) {
-
+        creditRepository.save(credit);
     }
 
     @Override
     public Credit find(UUID id) {
-        return null;
+        return creditRepository.getOne(id);
     }
 
     @Override
@@ -28,8 +29,16 @@ public class CreditOperations implements Operations<Credit>{
         return null;
     }
 
-    @Override
-    public void delete(UUID id) {
 
+    public void delete(Credit credit) {
+        creditRepository.delete(credit);
+    }
+
+    public List<Credit> getAll() {
+        return creditRepository.findAll();
+    }
+
+    public void deleteAll(List<Credit> credits) {
+        creditRepository.deleteAll(credits);
     }
 }

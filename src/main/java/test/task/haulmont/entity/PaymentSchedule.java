@@ -36,5 +36,7 @@ public class PaymentSchedule {
     @NotNull
     private double  paymentPercent;
 
-//    private CreditOffer creditOffer;
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE )
+    @JoinColumn(name = "credit_offer_id", nullable = false)
+    private CreditOffer creditOffer;
 }
