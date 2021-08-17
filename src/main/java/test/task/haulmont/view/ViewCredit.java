@@ -31,7 +31,7 @@ public class ViewCredit extends VerticalLayout implements View {
     private TextField bank;
     private List<Credit> credits;
     private Grid<Credit> grid;
-    private final Button addButton = new Button("Добавить");
+
     HorizontalLayout horizontalLayout = new HorizontalLayout();
     NativeSelect<Bank> bankNativeSelect;
     @PostConstruct
@@ -43,6 +43,9 @@ public class ViewCredit extends VerticalLayout implements View {
         horizontalLayout.addComponent(update = new Button("Edit credit",event -> getUI().addWindow(createUpdateCredit())));
         horizontalLayout.addComponent(find = new Button("View credit"));
         horizontalLayout.addComponent(delete = new Button("Delete credit",event ->{creditOperations.deleteAll(credits);getUI().getNavigator().navigateTo("Credits");}));
+        delete.setEnabled(false);
+        find.setEnabled(false);
+        update.setEnabled(false);
     }
 
     private Window createUpdateCredit(){
@@ -100,7 +103,7 @@ public class ViewCredit extends VerticalLayout implements View {
         grid.removeAllColumns();
         grid.setWidth("100%");
         grid.addColumn(Credit :: getCreditLimit)
-                .setCaption("Сredit limit");
+                .setCaption("Credit limit");
         grid.addColumn(Credit :: getCreditPercent)
                 .setCaption("Percent");
         grid.addColumn(Credit :: getBankName)
@@ -113,5 +116,6 @@ public class ViewCredit extends VerticalLayout implements View {
             update.setEnabled(credits.size() == 1);
         });
         addComponents(grid);
+
     }
 }

@@ -4,7 +4,6 @@ import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import test.task.haulmont.entity.Bank;
 import test.task.haulmont.entity.Client;
 import test.task.haulmont.operations.BankOperations;
@@ -50,7 +49,11 @@ public class ViewClient extends VerticalLayout implements View {
         horizontalLayout.addComponent(update = new Button("Edit client", event -> getUI().addWindow(createUpdateClient(clients.get(0)))));
         horizontalLayout.addComponent(find = new Button("View client", event -> getUI().addWindow(findClient(clients.get(0)))));
         horizontalLayout.addComponent(delete = new Button("Delete client", event -> {clientOperations.deleteAll(clients);getUI().getNavigator().navigateTo("Clients");}));
+        delete.setEnabled(false);
+        find.setEnabled(false);
+        update.setEnabled(false);
     }
+
 
     private Window createUpdateClient() {
 

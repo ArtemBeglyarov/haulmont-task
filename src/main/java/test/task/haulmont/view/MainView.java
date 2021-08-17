@@ -28,8 +28,6 @@ public class MainView extends UI implements ViewDisplay {
         setContent(vertical);
         vertical.addComponent(new Label("Select category"));
 
-//
-
 
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.addComponent(banks);

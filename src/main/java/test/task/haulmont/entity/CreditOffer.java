@@ -22,7 +22,8 @@ public class CreditOffer {
     @NotNull
     private Client client;
 
-    @ManyToOne( cascade = CascadeType.MERGE )
+    @ManyToOne
+//    @ManyToOne( cascade = CascadeType.MERGE )
     @NotNull
     private Credit credit;
 

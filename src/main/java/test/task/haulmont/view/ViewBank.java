@@ -22,12 +22,14 @@ public class ViewBank extends VerticalLayout implements View {
     private BankOperations bankOperations;
 
     HorizontalLayout horizontalLayout = new HorizontalLayout();
+    HorizontalLayout horizontalLayout2 = new HorizontalLayout();
     VerticalLayout vertical = new VerticalLayout();
 
     private Button add;
     private Button delete;
     private Button update;
     private Button find;
+    private Button view;
     private List<Bank> banks;
     private List<Client> clients;
     private Grid<Bank> grid;
@@ -35,12 +37,28 @@ public class ViewBank extends VerticalLayout implements View {
 
     @PostConstruct
     void init() {
-        addComponent(horizontalLayout);
-        showAllBanks();
-        horizontalLayout.addComponent(add = new Button("Create",(event -> getUI().addWindow(createUpdateBank()))));
+        addComponent(vertical);
+        vertical.addComponent(horizontalLayout);
+        vertical.addComponent(horizontalLayout2);
+
+        horizontalLayout2.addComponent(showAllBanks());
+        horizontalLayout.addComponent(add = new Button("Create", (event -> getUI().addWindow(createUpdateBank()))));
         horizontalLayout.addComponent(update = new Button("Update", event -> getUI().addWindow(createUpdateBank(banks.get(0)))));
-        horizontalLayout.addComponent(find = new Button("Find",event -> getUI().addWindow(findBank(banks.get(0)))));
-        horizontalLayout.addComponent(delete = new Button("Delete",event -> {bankOperations.deleteAll(banks);getUI().getNavigator().navigateTo("Banks");}));
+//        horizontalLayout.addComponent(find = new Button("Find",event -> getUI().addWindow(findBank(banks.get(0)))));
+        horizontalLayout.addComponent(delete = new Button("Delete", event -> {
+            bankOperations.deleteAll(banks);
+            getUI().getNavigator().navigateTo("Banks");
+        }));
+        horizontalLayout.addComponent(view = new Button("View bank",
+                event -> {
+                    horizontalLayout2.addComponent(showAllClients(banks.get(0)));
+                    view.setEnabled(false);
+                }));
+        delete.setEnabled(false);
+//        find.setEnabled(false);
+        update.setEnabled(false);
+        view.setEnabled(false);
+
     }
 
     private Window createUpdateBank() {
@@ -53,13 +71,14 @@ public class ViewBank extends VerticalLayout implements View {
         verticalWindow.addComponent(name = new TextField("Name"));
         return getComponents(bank, window, verticalWindow);
     }
-    private Window  createUpdateBank(Bank bank) {
+
+    private Window createUpdateBank(Bank bank) {
 
         Window window = new Window("Update Bank");
         VerticalLayout verticalWindow = new VerticalLayout();
 
         window.setContent(verticalWindow);
-        verticalWindow.addComponent(name = new TextField("Name",bank.getName()));
+        verticalWindow.addComponent(name = new TextField("Name", bank.getName()));
         return getComponents(bank, window, verticalWindow);
     }
 
@@ -70,7 +89,8 @@ public class ViewBank extends VerticalLayout implements View {
             bank.setName(name.getValue());
             bankOperations.create(bank);
             window.close();
-            getUI().getNavigator().navigateTo("Banks");}));
+            getUI().getNavigator().navigateTo("Banks");
+        }));
 
         horizontalLayout.addComponent(new Button("CLOSE", event -> window.close()));
         verticalWindow.addComponent(horizontalLayout);
@@ -78,23 +98,24 @@ public class ViewBank extends VerticalLayout implements View {
         window.center();
         return window;
     }
-    private Window findBank(Bank bank) {
 
-        Window window = new Window("Bank information");
-        VerticalLayout vertical = new VerticalLayout();
-
-        bankOperations.find(bank.getID());
-        window.setContent(vertical);
-        vertical.addComponent(new Label("Name" + ": " + bank.getName()));
-        vertical.addComponent(new Label("Credits" + ": " + bank.viewNameAllCredits(bank.getCredits())));
-        vertical.addComponent(new Label("Clients" + ": " + bank.viewNameAllClients(bank.getClients())));
-        vertical.addComponent(new Button("close", event -> window.close()));
-        window.center();
-        window.setWidth("20%");
-        window.setModal(true);
-        return window;
-    }
-    private void showAllBanks() {
+    //    private Window findBank(Bank bank) {
+//
+//        Window window = new Window("Bank information");
+//        VerticalLayout vertical = new VerticalLayout();
+//
+//        bankOperations.find(bank.getID());
+//        window.setContent(vertical);
+//        vertical.addComponent(new Label("Name" + ": " + bank.getName()));
+//        vertical.addComponent(new Label("Credits" + ": " + bank.viewNameAllCredits(bank.getCredits())));
+//        vertical.addComponent(new Label("Clients" + ": " + bank.viewNameAllClients(bank.getClients())));
+//        vertical.addComponent(new Button("close", event -> window.close()));
+//        window.center();
+//        window.setWidth("20%");
+//        window.setModal(true);
+//        return window;
+//    }
+    private Grid<Bank> showAllBanks() {
         grid = new Grid<>(Bank.class);
         grid.setItems(bankOperations.getAll());
         grid.removeAllColumns();
@@ -104,9 +125,22 @@ public class ViewBank extends VerticalLayout implements View {
         grid.addSelectionListener(event -> {
             banks = new ArrayList<>(event.getAllSelectedItems());
             delete.setEnabled(banks.size() > 0);
-            find.setEnabled(banks.size() == 1);
+//            find.setEnabled(banks.size() == 1);
             update.setEnabled(banks.size() == 1);
+            view.setEnabled(banks.size() == 1);
         });
-        addComponents(grid);
+        return grid;
+    }
+
+    private Grid<Bank> showAllClients(Bank bank) {
+        grid = new Grid<>(Bank.class);
+        grid.setItems(bank);
+        grid.removeAllColumns();
+        grid.setWidth("50%");
+        grid.addColumn(Bank::viewNameAllClients).setCaption("Client");
+        grid.addColumn(Bank::viewNameAllCredits).setCaption("Credit");
+
+
+        return grid;
     }
 }

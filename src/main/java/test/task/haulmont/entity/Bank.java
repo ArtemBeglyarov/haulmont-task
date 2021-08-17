@@ -26,7 +26,7 @@ public class Bank {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "bank", cascade = {CascadeType.MERGE, CascadeType.REMOVE})
     private Set<Credit> credits;
 
-    public String viewNameAllClients(Set<Client> clients) {
+    public String viewNameAllClients() {
         StringBuilder sb = new StringBuilder();
         for (Client k : clients) {
             sb.append(k.getName());
@@ -35,7 +35,7 @@ public class Bank {
         }
         return String.valueOf(sb);
     }
-    public String viewNameAllCredits(Set<Credit> credits) {
+    public String viewNameAllCredits() {
         StringBuilder sb = new StringBuilder();
         for (Credit k : credits) {
             sb.append(k.getName());
