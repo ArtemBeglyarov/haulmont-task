@@ -11,6 +11,8 @@ import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
+import javax.naming.Name;
+
 
 @Theme("valo")
 @SpringUI
