@@ -1,6 +1,8 @@
 package test.task.haulmont.view;
 
+import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewDisplay;
 import com.vaadin.server.VaadinRequest;
@@ -13,6 +15,7 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("valo")
 @SpringUI
 @SpringViewDisplay
+@StyleSheet("stayles.css")
 public class MainView extends UI implements ViewDisplay {
 
     VerticalLayout vertical = new VerticalLayout();
@@ -28,13 +31,17 @@ public class MainView extends UI implements ViewDisplay {
         setContent(vertical);
         vertical.addComponent(new Label("Select category"));
 
-
         HorizontalLayout buttons = new HorizontalLayout();
         buttons.addComponent(banks);
+        banks.setIcon(VaadinIcons.PIGGY_BANK);
         buttons.addComponent(client);
+        client.setIcon(VaadinIcons.MALE);
         buttons.addComponent(credit);
+        credit.setIcon(VaadinIcons.MONEY);
         buttons.addComponent(creditOffer);
+        creditOffer.setIcon(VaadinIcons.WALLET);
         buttons.addComponent(paymentSchedule);
+        paymentSchedule.setIcon(VaadinIcons.OPEN_BOOK);
         panel = new Panel();
 
         vertical.addComponent(buttons);

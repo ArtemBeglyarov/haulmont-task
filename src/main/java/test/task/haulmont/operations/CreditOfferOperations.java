@@ -25,17 +25,15 @@ public class CreditOfferOperations implements Operations<CreditOffer> {
     }
 
     @Override
-    public CreditOffer update(UUID id) {
-        return null;
+    public List<CreditOffer> getAll(){
+        return creditOfferRepository.findAll();
     }
 
-    public void delete(UUID id) {
-
-    }
+    @Override
     public  void deleteAll(List<CreditOffer> creditOffers){
         creditOfferRepository.deleteAll(creditOffers);
     }
-    public List<CreditOffer> getAll(){
-        return creditOfferRepository.findAll();
+    public void delete(UUID id) {
+
     }
 }

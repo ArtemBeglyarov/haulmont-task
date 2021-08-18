@@ -46,6 +46,8 @@ public class Client {
             joinColumns={@JoinColumn(name="client_id")},
             inverseJoinColumns={@JoinColumn(name="bank_id")})
     private Set<Bank> banks = new HashSet<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "client", cascade ={ CascadeType.MERGE, CascadeType.REMOVE })
+    private Set<CreditOffer> creditOffers;
 
     public String viewNameAllBank(Set<Bank> banks) {
         StringBuilder sb = new StringBuilder();

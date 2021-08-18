@@ -22,8 +22,8 @@ public class CreditOffer {
     @NotNull
     private Client client;
 
-    @ManyToOne
-//    @ManyToOne( cascade = CascadeType.MERGE )
+
+    @ManyToOne( cascade = CascadeType.MERGE )
     @NotNull
     private Credit credit;
 
@@ -33,4 +33,7 @@ public class CreditOffer {
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "creditOffer", cascade = CascadeType.REMOVE)
     private List<PaymentSchedule> paymentSchedule;
+
+
+
 }

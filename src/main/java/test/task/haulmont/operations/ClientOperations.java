@@ -24,19 +24,16 @@ public class ClientOperations implements Operations<Client> {
     }
 
     @Override
-    public Client update(UUID id) {
-        return null;
-    }
-
-
-    public void delete(UUID id) {
-
-    }
     public List<Client> getAll(){
         return clientRepository.findAll();
     }
+
+    @Override
     public void deleteAll(List<Client> clients) {
         clientRepository.deleteAll(clients);
+    }
+    public void delete(UUID id) {
+
     }
 }
 

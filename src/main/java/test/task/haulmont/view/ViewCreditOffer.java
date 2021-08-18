@@ -1,5 +1,6 @@
 package test.task.haulmont.view;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -43,6 +44,8 @@ public class ViewCreditOffer extends VerticalLayout implements View {
         addComponent(vertical);
         horizontalLayout.addComponent(amount = new TextField("amount of credit"));
         horizontalLayout.addComponent(creditTerm = new TextField("number of months"));
+        amount.setIcon(VaadinIcons.WALLET);
+        creditTerm.setIcon(VaadinIcons.CALENDAR);
         vertical.addComponent(horizontalLayout);
         vertical.addComponent(confirm = new Button("confirm", event -> getUI().addWindow(selectCreditAndClient(Double.parseDouble(amount.getValue()), Double.parseDouble(creditTerm.getValue())))));
     }

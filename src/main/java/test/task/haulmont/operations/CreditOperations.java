@@ -25,20 +25,15 @@ public class CreditOperations implements Operations<Credit> {
     }
 
     @Override
-    public Credit update(UUID id) {
-        return null;
-    }
-
-
-    public void delete(Credit credit) {
-        creditRepository.delete(credit);
-    }
-
     public List<Credit> getAll() {
         return creditRepository.findAll();
     }
 
+    @Override
     public void deleteAll(List<Credit> credits) {
         creditRepository.deleteAll(credits);
+    }
+    public void delete(Credit credit) {
+        creditRepository.delete(credit);
     }
 }

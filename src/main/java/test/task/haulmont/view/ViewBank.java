@@ -1,5 +1,7 @@
 package test.task.haulmont.view;
 
+import com.vaadin.annotations.Push;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -12,7 +14,7 @@ import test.task.haulmont.operations.ClientOperations;
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
-
+@Push
 @SpringView(name = "Banks")
 public class ViewBank extends VerticalLayout implements View {
 
@@ -37,27 +39,32 @@ public class ViewBank extends VerticalLayout implements View {
 
     @PostConstruct
     void init() {
-        addComponent(vertical);
-        vertical.addComponent(horizontalLayout);
-        vertical.addComponent(horizontalLayout2);
+        addComponent(horizontalLayout);
+        addComponent(showAllBanks());
 
-        horizontalLayout2.addComponent(showAllBanks());
-        horizontalLayout.addComponent(add = new Button("Create", (event -> getUI().addWindow(createUpdateBank()))));
-        horizontalLayout.addComponent(update = new Button("Update", event -> getUI().addWindow(createUpdateBank(banks.get(0)))));
-//        horizontalLayout.addComponent(find = new Button("Find",event -> getUI().addWindow(findBank(banks.get(0)))));
-        horizontalLayout.addComponent(delete = new Button("Delete", event -> {
+        horizontalLayout.addComponent(add = new Button("Add bank", (event -> getUI().addWindow(createUpdateBank()))));
+        horizontalLayout.addComponent(update = new Button("Edit bank", event -> getUI().addWindow(createUpdateBank(banks.get(0)))));
+        horizontalLayout.addComponent(find = new Button("Find info",event -> getUI().addWindow(findBank(banks.get(0)))));
+        horizontalLayout.addComponent(delete = new Button("Remove bank", event -> {
             bankOperations.deleteAll(banks);
             getUI().getNavigator().navigateTo("Banks");
         }));
-        horizontalLayout.addComponent(view = new Button("View bank",
-                event -> {
-                    horizontalLayout2.addComponent(showAllClients(banks.get(0)));
-                    view.setEnabled(false);
-                }));
+//        horizontalLayout.addComponent(view = new Button("Show info",
+//                event -> {
+////                    horizontalLayout2.removeComponent();
+//                    horizontalLayout2.removeAllComponents();
+//                    horizontalLayout2.addComponent(showAllClients(banks.get(0)));
+//                    view.setEnabled(false);
+//                }));
+        add.setIcon(VaadinIcons.PIGGY_BANK);
+        update.setIcon(VaadinIcons.PIGGY_BANK);
+        delete.setIcon(VaadinIcons.PIGGY_BANK);
+//        view.setIcon(VaadinIcons.PIGGY_BANK);
+        find.setIcon(VaadinIcons.PIGGY_BANK);
         delete.setEnabled(false);
-//        find.setEnabled(false);
+        find.setEnabled(false);
         update.setEnabled(false);
-        view.setEnabled(false);
+//        view.setEnabled(false);
 
     }
 
@@ -85,62 +92,62 @@ public class ViewBank extends VerticalLayout implements View {
     private Window getComponents(Bank bank, Window window, VerticalLayout verticalWindow) {
         HorizontalLayout horizontalLayout = new HorizontalLayout();
 
-        horizontalLayout.addComponent(new Button("OK", event -> {
+        horizontalLayout.addComponent(new Button("Ok", event -> {
             bank.setName(name.getValue());
             bankOperations.create(bank);
             window.close();
             getUI().getNavigator().navigateTo("Banks");
         }));
 
-        horizontalLayout.addComponent(new Button("CLOSE", event -> window.close()));
+        horizontalLayout.addComponent(new Button("Close", event -> window.close()));
         verticalWindow.addComponent(horizontalLayout);
         window.setModal(true);
         window.center();
         return window;
     }
 
-    //    private Window findBank(Bank bank) {
-//
-//        Window window = new Window("Bank information");
-//        VerticalLayout vertical = new VerticalLayout();
-//
-//        bankOperations.find(bank.getID());
-//        window.setContent(vertical);
-//        vertical.addComponent(new Label("Name" + ": " + bank.getName()));
-//        vertical.addComponent(new Label("Credits" + ": " + bank.viewNameAllCredits(bank.getCredits())));
-//        vertical.addComponent(new Label("Clients" + ": " + bank.viewNameAllClients(bank.getClients())));
-//        vertical.addComponent(new Button("close", event -> window.close()));
-//        window.center();
-//        window.setWidth("20%");
-//        window.setModal(true);
-//        return window;
-//    }
+        private Window findBank(Bank bank) {
+
+        Window window = new Window("Bank information");
+        VerticalLayout vertical = new VerticalLayout();
+
+        bankOperations.find(bank.getID());
+        window.setContent(vertical);
+        vertical.addComponent(new Label("Name" + ": " + bank.getName()));
+        vertical.addComponent(new Label("Credits" + ": " + bank.viewNameAllCredits()));
+        vertical.addComponent(new Label("Clients" + ": " + bank.viewNameAllClients()));
+        vertical.addComponent(new Button("close", event -> window.close()));
+        window.center();
+        window.setWidth("20%");
+        window.setModal(true);
+        return window;
+    }
     private Grid<Bank> showAllBanks() {
         grid = new Grid<>(Bank.class);
         grid.setItems(bankOperations.getAll());
         grid.removeAllColumns();
-        grid.setWidth("50%");
+        grid.setWidth("34%");
         grid.addColumn(Bank::getName).setCaption("Name");
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
         grid.addSelectionListener(event -> {
             banks = new ArrayList<>(event.getAllSelectedItems());
             delete.setEnabled(banks.size() > 0);
-//            find.setEnabled(banks.size() == 1);
+            find.setEnabled(banks.size() == 1);
             update.setEnabled(banks.size() == 1);
-            view.setEnabled(banks.size() == 1);
+//            view.setEnabled(banks.size() == 1);
         });
         return grid;
     }
 
-    private Grid<Bank> showAllClients(Bank bank) {
-        grid = new Grid<>(Bank.class);
-        grid.setItems(bank);
-        grid.removeAllColumns();
-        grid.setWidth("50%");
-        grid.addColumn(Bank::viewNameAllClients).setCaption("Client");
-        grid.addColumn(Bank::viewNameAllCredits).setCaption("Credit");
-
-
-        return grid;
-    }
+//    private Grid<Bank> showAllClients(Bank bank) {
+//        grid = new Grid<>(Bank.class);
+//        grid.setItems(bank);
+//        grid.removeAllColumns();
+//        grid.setWidth("100%");
+//        grid.addColumn(Bank::viewNameAllClients).setCaption("Client");
+//        grid.addColumn(Bank::viewNameAllCredits).setCaption("Credit");
+//
+//
+//        return grid;
+//    }
 }

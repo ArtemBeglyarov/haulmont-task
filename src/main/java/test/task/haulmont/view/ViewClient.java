@@ -1,5 +1,6 @@
 package test.task.haulmont.view;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -8,6 +9,7 @@ import test.task.haulmont.entity.Bank;
 import test.task.haulmont.entity.Client;
 import test.task.haulmont.operations.BankOperations;
 import test.task.haulmont.operations.ClientOperations;
+import test.task.haulmont.operations.CreditOfferOperations;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -38,17 +40,28 @@ public class ViewClient extends VerticalLayout implements View {
 
     @Autowired
     private BankOperations bankOperations;
-
+    @Autowired
+    private CreditOfferOperations creditOfferOperations;
     HorizontalLayout horizontalLayout = new HorizontalLayout();
 
     @PostConstruct
     void init() {
         addComponent(horizontalLayout);
         showAllClients();
-        horizontalLayout.addComponent(add = new Button("Create client", (event -> getUI().addWindow(createUpdateClient()))));
+        horizontalLayout.addComponent(add = new Button("Add client", (event -> getUI().addWindow(createUpdateClient()))));
         horizontalLayout.addComponent(update = new Button("Edit client", event -> getUI().addWindow(createUpdateClient(clients.get(0)))));
-        horizontalLayout.addComponent(find = new Button("View client", event -> getUI().addWindow(findClient(clients.get(0)))));
-        horizontalLayout.addComponent(delete = new Button("Delete client", event -> {clientOperations.deleteAll(clients);getUI().getNavigator().navigateTo("Clients");}));
+        horizontalLayout.addComponent(find = new Button("Show info", event -> getUI().addWindow(findClient(clients.get(0)))));
+        horizontalLayout.addComponent(delete = new Button("Remove client", event -> {
+            clientOperations.deleteAll(clients);
+            getUI().getNavigator().navigateTo("Clients");
+        }));
+
+
+        add.setIcon(VaadinIcons.MALE);
+        update.setIcon(VaadinIcons.MALE);
+        find.setIcon(VaadinIcons.MALE);
+        delete.setIcon(VaadinIcons.MALE);
+
         delete.setEnabled(false);
         find.setEnabled(false);
         update.setEnabled(false);
@@ -61,45 +74,58 @@ public class ViewClient extends VerticalLayout implements View {
 
         Window window = new Window("add client");
         VerticalLayout verticalWindow = new VerticalLayout();
-        bankNativeSelect = new NativeSelect<Bank>("Select Bank",bankOperations.getAll());
-        bankNativeSelect.setItemCaptionGenerator(Bank ::getName);
+        bankNativeSelect = new NativeSelect<Bank>("Select Bank", bankOperations.getAll());
+        bankNativeSelect.setItemCaptionGenerator(Bank::getName);
         window.setContent(verticalWindow);
         verticalWindow.addComponent(name = new TextField("Name"));
+        name.setIcon(VaadinIcons.USER);
         verticalWindow.addComponent(surname = new TextField("Surname"));
+        surname.setIcon(VaadinIcons.USER);
         verticalWindow.addComponent(patronymic = new TextField("Patronymic"));
+        patronymic.setIcon(VaadinIcons.USER);
         verticalWindow.addComponent(email = new TextField("Email"));
+        email.setIcon(VaadinIcons.ENVELOPE);
         verticalWindow.addComponent(phone = new TextField("Phone number"));
+        phone.setIcon(VaadinIcons.PHONE);
         verticalWindow.addComponent(passportNumber = new TextField("Passport number"));
+        passportNumber.setIcon(VaadinIcons.CLIPBOARD_USER);
         verticalWindow.addComponent(bankNativeSelect);
+        bankNativeSelect.setIcon(VaadinIcons.PIGGY_BANK);
 
-        return getComponents(client, window, verticalWindow, name, surname, patronymic, email, phone, passportNumber, banks,bankNativeSelect);
+        return getComponents(client, window, verticalWindow, name, surname, patronymic, email, phone, passportNumber, banks, bankNativeSelect);
     }
 
     private Window createUpdateClient(Client client) {
-        bankNativeSelect = new NativeSelect<Bank>("Select Bank",bankOperations.getAll());
-        bankNativeSelect.setItemCaptionGenerator(Bank ::getName);
+        bankNativeSelect = new NativeSelect<Bank>("Select Bank", bankOperations.getAll());
+        bankNativeSelect.setItemCaptionGenerator(Bank::getName);
         Window window = new Window("Edit client");
         VerticalLayout verticalWindow = new VerticalLayout();
 
         window.setContent(verticalWindow);
         verticalWindow.addComponent(name = new TextField("Name", client.getName()));
+        name.setIcon(VaadinIcons.USER);
         verticalWindow.addComponent(surname = new TextField("Surname", client.getSurname()));
+        surname.setIcon(VaadinIcons.USER);
         verticalWindow.addComponent(patronymic = new TextField("Patronymic", client.getPatronymic()));
+        patronymic.setIcon(VaadinIcons.USER);
         verticalWindow.addComponent(email = new TextField("Email", client.getEmail()));
+        email.setIcon(VaadinIcons.ENVELOPE);
         verticalWindow.addComponent(phone = new TextField("Phone number", String.valueOf(client.getNumberPhone())));
+        phone.setIcon(VaadinIcons.PHONE);
         verticalWindow.addComponent(passportNumber = new TextField("Passport number", client.getPassportID()));
+        passportNumber.setIcon(VaadinIcons.CLIPBOARD_USER);
         verticalWindow.addComponent(bankNativeSelect);
-        return getComponents(client, window, verticalWindow, name, surname, patronymic, email, phone, passportNumber,banks, bankNativeSelect);
+        bankNativeSelect.setIcon(VaadinIcons.PIGGY_BANK);
+        return getComponents(client, window, verticalWindow, name, surname, patronymic, email, phone, passportNumber, banks, bankNativeSelect);
 
     }
 
     private Window getComponents(Client client, Window window, VerticalLayout verticalWindow, TextField name, TextField surname, TextField patronymic, TextField email, TextField phone, TextField passportNumber, Set<Bank> banks, NativeSelect<Bank> bankNativeSelect) {
 
 
-
         HorizontalLayout horizontalLayout = new HorizontalLayout();
 
-        horizontalLayout.addComponent(new Button("OK", event -> {
+        horizontalLayout.addComponent(new Button("Ok", event -> {
 
             client.setName(name.getValue());
             client.setSurname(surname.getValue());
@@ -110,9 +136,10 @@ public class ViewClient extends VerticalLayout implements View {
             client.getBanks().add(bankNativeSelect.getValue());
             clientOperations.create(client);
             window.close();
-            getUI().getNavigator().navigateTo("Clients");}));
+            getUI().getNavigator().navigateTo("Clients");
+        }));
 
-        horizontalLayout.addComponent(new Button("CLOSE", event -> window.close()));
+        horizontalLayout.addComponent(new Button("Close", event -> window.close()));
         verticalWindow.addComponent(horizontalLayout);
         window.setModal(true);
         window.center();
@@ -158,9 +185,9 @@ public class ViewClient extends VerticalLayout implements View {
         grid = new Grid<>(Client.class);
         grid.setItems(clientOperations.getAll());
         grid.removeAllColumns();
-        grid.setWidth("50%");
-        grid.addColumn(Client::getName).setCaption("Name");
+        grid.setWidth("34%");
         grid.addColumn(Client::getSurname).setCaption("Surname");
+        grid.addColumn(Client::getName).setCaption("Name");
         grid.addColumn(Client::getPatronymic).setCaption("Patronymic");
 //        grid.addColumn(Client::getNumberPhone).setCaption("Phone");
 //        grid.addColumn(Client::getEmail).setCaption("Email");
@@ -171,7 +198,7 @@ public class ViewClient extends VerticalLayout implements View {
             delete.setEnabled(clients.size() > 0);
             find.setEnabled(clients.size() == 1);
             update.setEnabled(clients.size() == 1);
-            });
+        });
         addComponents(grid);
     }
 }

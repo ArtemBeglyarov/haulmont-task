@@ -25,18 +25,15 @@ public class PaymentOperations implements Operations<PaymentSchedule> {
     }
 
     @Override
-    public PaymentSchedule update(UUID id) {
-        return null;
-    }
-
-
-    public void delete(PaymentSchedule paymentSchedule) {
-        paymentRepository.delete(paymentSchedule);
-    }
     public  void deleteAll(List<PaymentSchedule> paymentSchedule){
         paymentRepository.deleteAll(paymentSchedule);
     }
+    @Override
     public List<PaymentSchedule>  getAll(){
         return paymentRepository.findAll();
+    }
+
+    public void delete(PaymentSchedule paymentSchedule) {
+        paymentRepository.delete(paymentSchedule);
     }
 }

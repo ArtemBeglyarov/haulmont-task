@@ -1,5 +1,6 @@
 package test.task.haulmont.view;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
@@ -24,11 +25,10 @@ public class ViewCredit extends VerticalLayout implements View {
     private Button add;
     private Button delete;
     private Button update;
-    private Button find;
     private TextField name;
     private TextField creditLimit;
     private TextField percent;
-    private TextField bank;
+
     private List<Credit> credits;
     private Grid<Credit> grid;
 
@@ -39,12 +39,15 @@ public class ViewCredit extends VerticalLayout implements View {
     void init() {
         addComponent(horizontalLayout);
         showAllCredit();
-        horizontalLayout.addComponent(add = new Button("Create credit",event -> getUI().addWindow(createUpdateCredit())));
-        horizontalLayout.addComponent(update = new Button("Edit credit",event -> getUI().addWindow(createUpdateCredit())));
-        horizontalLayout.addComponent(find = new Button("View credit"));
-        horizontalLayout.addComponent(delete = new Button("Delete credit",event ->{creditOperations.deleteAll(credits);getUI().getNavigator().navigateTo("Credits");}));
+        horizontalLayout.addComponent(add = new Button("Add credit",event -> getUI().addWindow(createUpdateCredit())));
+        horizontalLayout.addComponent(update = new Button("Edit credit",event -> getUI().addWindow(createUpdateCredit(credits.get(0)))));
+        horizontalLayout.addComponent(delete = new Button("Remove credit",event ->{creditOperations.deleteAll(credits);getUI().getNavigator().navigateTo("Credits");}));
+
+        add.setIcon(VaadinIcons.MONEY);
+        update.setIcon(VaadinIcons.MONEY);
+        delete.setIcon(VaadinIcons.MONEY);
+
         delete.setEnabled(false);
-        find.setEnabled(false);
         update.setEnabled(false);
     }
 
@@ -60,6 +63,7 @@ public class ViewCredit extends VerticalLayout implements View {
         verticalWindow.addComponent(creditLimit= new TextField("Limit"));
         verticalWindow.addComponent(percent = new TextField("Percent"));
         verticalWindow.addComponent(bankNativeSelect);
+        bankNativeSelect.setIcon(VaadinIcons.PIGGY_BANK);
         return getComponents(credit, window, verticalWindow);
     }
     private Window createUpdateCredit(Credit credit){
@@ -74,6 +78,7 @@ public class ViewCredit extends VerticalLayout implements View {
         verticalWindow.addComponent(creditLimit= new TextField("Limit",String.valueOf(credit.getCreditLimit())));
         verticalWindow.addComponent(percent = new TextField("Name",String.valueOf(credit.getCreditPercent())));
         verticalWindow.addComponent(bankNativeSelect);
+        bankNativeSelect.setIcon(VaadinIcons.PIGGY_BANK);
 
         return getComponents(credit, window, verticalWindow);
     }
@@ -101,7 +106,7 @@ public class ViewCredit extends VerticalLayout implements View {
         grid = new Grid<>(Credit.class);
         grid.setItems(creditOperations.getAll());
         grid.removeAllColumns();
-        grid.setWidth("100%");
+        grid.setWidth("34%");
         grid.addColumn(Credit :: getCreditLimit)
                 .setCaption("Credit limit");
         grid.addColumn(Credit :: getCreditPercent)
@@ -112,7 +117,6 @@ public class ViewCredit extends VerticalLayout implements View {
         grid.addSelectionListener(event -> {
             credits = new ArrayList<>(event.getAllSelectedItems());
             delete.setEnabled(credits.size() > 0);
-            find.setEnabled(credits.size() == 1);
             update.setEnabled(credits.size() == 1);
         });
         addComponents(grid);
