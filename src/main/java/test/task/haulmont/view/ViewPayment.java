@@ -2,18 +2,19 @@ package test.task.haulmont.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import test.task.haulmont.entity.Client;
+import test.task.haulmont.entity.Credit;
 import test.task.haulmont.entity.CreditOffer;
 import test.task.haulmont.entity.PaymentSchedule;
 import test.task.haulmont.operations.ClientOperations;
 import test.task.haulmont.operations.CreditOfferOperations;
+import test.task.haulmont.operations.PaymentOperations;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
+import java.util.List;
 
 @SpringView(name = "PaymentSchedule")
 public class ViewPayment extends VerticalLayout implements View {
@@ -25,48 +26,56 @@ public class ViewPayment extends VerticalLayout implements View {
 
     @Autowired
     CreditOfferOperations creditOfferOperations;
+    @Autowired
+    PaymentOperations paymentOperations;
 
+    private List<CreditOffer> creditOffers;
     Grid<Client> grid;
     Grid<CreditOffer> creditOfferGrid;
 
     VerticalLayout vertical = new VerticalLayout();
     HorizontalLayout horizontalLayout = new HorizontalLayout();
     Button viewPay;
+    Button remove;
 
     @PostConstruct
     void init() {
-
         addComponent(horizontalLayout);
-        addComponent(showAllClient());
-        vertical.addComponent(viewPaymentSchedule());
+        showAllClient();
+       horizontalLayout.addComponent(viewPay=new Button("View pay",event -> getUI().addWindow(viewPaymentSchedule(creditOffers.get(0)))));
+       horizontalLayout.addComponent(remove=new Button("Remove",event ->{creditOfferOperations.deleteAll(creditOffers);getUI().getNavigator().navigateTo("PaymentSchedule");}));
+        viewPay.setEnabled(false);
+        remove.setEnabled(false);
     }
 
-    private Grid<PaymentSchedule> viewPaymentSchedule() {
+    private Window viewPaymentSchedule(CreditOffer creditOffer) {
+        Window window = new Window();
         paymentScheduleGrid = new Grid<>(PaymentSchedule.class);
-        paymentScheduleGrid.setItems(creditOfferOperations.getAll().get(0).getPaymentSchedule());
+        paymentScheduleGrid.setItems(creditOffers.get(0).getPaymentSchedule());
         paymentScheduleGrid.removeAllColumns();
-        paymentScheduleGrid.setWidth("100%");
+        paymentScheduleGrid.setWidth("1400");
         paymentScheduleGrid.addColumn(PaymentSchedule::getPayDay).setCaption("Day payment");
         paymentScheduleGrid.addColumn(PaymentSchedule::getPaymentSum).setCaption("Payment sum");
         paymentScheduleGrid.addColumn(PaymentSchedule::getPaymentBodyCredit).setCaption("Payment body credit");
         paymentScheduleGrid.addColumn(PaymentSchedule::getPaymentPercent).setCaption("Pay percent");
-        return paymentScheduleGrid;
+        window.setContent(paymentScheduleGrid);
+        window.setModal(true);
+        window.center();
+        return window;
     }
 
-    private Grid<CreditOffer> showAllClient() {
+    private void showAllClient() {
         creditOfferGrid = new Grid<>(CreditOffer.class);
         creditOfferGrid.setItems(creditOfferOperations.getAll());
         creditOfferGrid.removeAllColumns();
         creditOfferGrid.setWidth("34%");
-        creditOfferGrid.addColumn(CreditOffer::getClient).setCaption("Surname");
+        creditOfferGrid.addColumn(CreditOffer::getNameClient).setCaption("Surname");
         creditOfferGrid.setSelectionMode(Grid.SelectionMode.MULTI);
-//        creditOfferGrid.addSelectionListener(event -> {
-//            banks = new ArrayList<>(event.getAllSelectedItems());
-//            delete.setEnabled(banks.size() > 0);
-//            find.setEnabled(banks.size() == 1);
-//            update.setEnabled(banks.size() == 1);
-////            view.setEnabled(banks.size() == 1);
-//        });
-        return creditOfferGrid;
+        creditOfferGrid.addSelectionListener(event -> {
+            creditOffers = new ArrayList<>(event.getAllSelectedItems());
+            viewPay.setEnabled(creditOffers.size() == 1);
+            remove.setEnabled(creditOffers.size() == 1);
+        });
+        addComponent(creditOfferGrid);
     }
 }

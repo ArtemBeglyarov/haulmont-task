@@ -12,6 +12,8 @@ import test.task.haulmont.entity.PaymentSchedule;
 import test.task.haulmont.operations.*;
 
 import javax.annotation.PostConstruct;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -98,8 +100,8 @@ public class ViewCreditOffer extends VerticalLayout implements View {
             paymentSchedule.setPayDay(date);
             localDateTime = localDateTime.plusMonths(1);
             date = Date.valueOf(localDateTime.toLocalDate());
-            paymentSchedule.setPaymentBodyCredit(paymentBody);
-            paymentSchedule.setPaymentPercent(sum * percent /100 /12);
+            paymentSchedule.setPaymentBodyCredit(rounding(paymentBody));
+            paymentSchedule.setPaymentPercent(rounding(sum * percent /100 /12));
 
             double paymentSum = paymentSchedule.getPaymentPercent() + paymentSchedule.getPaymentBodyCredit();
             paymentSchedule.setPaymentSum(paymentSum);
@@ -112,5 +114,9 @@ public class ViewCreditOffer extends VerticalLayout implements View {
 
 
         return paymentScheduleList;
+    }
+    public double rounding(double d){
+        BigDecimal bd = new BigDecimal(d).setScale(2, RoundingMode.HALF_EVEN);
+        return bd.doubleValue();
     }
 }

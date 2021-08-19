@@ -34,6 +34,7 @@ public class CreditOffer {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "creditOffer", cascade = CascadeType.REMOVE)
     private List<PaymentSchedule> paymentSchedule;
 
-
-
+    public String getNameClient() {
+        return client.getSurname();
+    }
 }
