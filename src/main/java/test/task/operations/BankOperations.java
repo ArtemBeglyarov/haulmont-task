@@ -1,9 +1,9 @@
-package test.task.haulmont.operations;
+package test.task.operations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import test.task.haulmont.entity.Bank;
-import test.task.haulmont.repository.BankRepository;
+import test.task.entity.Bank;
+import test.task.repository.BankRepository;
 
 import java.util.List;
 import java.util.UUID;

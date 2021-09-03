@@ -1,4 +1,4 @@
-package test.task.haulmont.view;
+package test.task.view;
 
 import com.vaadin.annotations.Push;
 import com.vaadin.icons.VaadinIcons;
@@ -6,10 +6,10 @@ import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import test.task.haulmont.entity.Bank;
-import test.task.haulmont.entity.Client;
-import test.task.haulmont.operations.BankOperations;
-import test.task.haulmont.operations.ClientOperations;
+import test.task.entity.Bank;
+import test.task.entity.Client;
+import test.task.operations.BankOperations;
+import test.task.operations.ClientOperations;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -49,23 +49,14 @@ public class ViewBank extends VerticalLayout implements View {
             bankOperations.deleteAll(banks);
             getUI().getNavigator().navigateTo("Banks");
         }));
-//        horizontalLayout.addComponent(view = new Button("Show info",
-//                event -> {
-////                    horizontalLayout2.removeComponent();
-//                    horizontalLayout2.removeAllComponents();
-//                    horizontalLayout2.addComponent(showAllClients(banks.get(0)));
-//                    view.setEnabled(false);
-//                }));
         add.setIcon(VaadinIcons.PIGGY_BANK);
         update.setIcon(VaadinIcons.PIGGY_BANK);
         delete.setIcon(VaadinIcons.PIGGY_BANK);
-//        view.setIcon(VaadinIcons.PIGGY_BANK);
+
         find.setIcon(VaadinIcons.PIGGY_BANK);
         delete.setEnabled(false);
         find.setEnabled(false);
         update.setEnabled(false);
-//        view.setEnabled(false);
-
     }
 
     private Window createUpdateBank() {
@@ -122,6 +113,7 @@ public class ViewBank extends VerticalLayout implements View {
         window.setModal(true);
         return window;
     }
+
     private Grid<Bank> showAllBanks() {
         grid = new Grid<>(Bank.class);
         grid.setItems(bankOperations.getAll());
@@ -134,20 +126,8 @@ public class ViewBank extends VerticalLayout implements View {
             delete.setEnabled(banks.size() > 0);
             find.setEnabled(banks.size() == 1);
             update.setEnabled(banks.size() == 1);
-//            view.setEnabled(banks.size() == 1);
         });
         return grid;
     }
 
-//    private Grid<Bank> showAllClients(Bank bank) {
-//        grid = new Grid<>(Bank.class);
-//        grid.setItems(bank);
-//        grid.removeAllColumns();
-//        grid.setWidth("100%");
-//        grid.addColumn(Bank::viewNameAllClients).setCaption("Client");
-//        grid.addColumn(Bank::viewNameAllCredits).setCaption("Credit");
-//
-//
-//        return grid;
-//    }
 }

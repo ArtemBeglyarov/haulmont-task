@@ -1,15 +1,15 @@
-package test.task.haulmont.view;
+package test.task.view;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import test.task.haulmont.entity.Client;
-import test.task.haulmont.entity.Credit;
-import test.task.haulmont.entity.CreditOffer;
-import test.task.haulmont.entity.PaymentSchedule;
-import test.task.haulmont.operations.*;
+import test.task.entity.Client;
+import test.task.entity.Credit;
+import test.task.entity.CreditOffer;
+import test.task.entity.PaymentSchedule;
+import test.task.operations.*;
 
 import javax.annotation.PostConstruct;
 import java.math.BigDecimal;
@@ -115,6 +115,7 @@ public class ViewCreditOffer extends VerticalLayout implements View {
 
         return paymentScheduleList;
     }
+
     public double rounding(double d){
         BigDecimal bd = new BigDecimal(d).setScale(2, RoundingMode.HALF_EVEN);
         return bd.doubleValue();

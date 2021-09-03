@@ -1,6 +1,5 @@
-package test.task.haulmont.view;
+package test.task.view;
 
-import com.vaadin.annotations.StyleSheet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
@@ -11,13 +10,10 @@ import com.vaadin.spring.annotation.SpringViewDisplay;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
 
-import javax.naming.Name;
-
 
 @Theme("valo")
 @SpringUI
 @SpringViewDisplay
-@StyleSheet("stayles.css")
 public class MainView extends UI implements ViewDisplay {
 
     VerticalLayout vertical = new VerticalLayout();
@@ -49,8 +45,6 @@ public class MainView extends UI implements ViewDisplay {
         vertical.addComponent(buttons);
         vertical.addComponent(panel);
         vertical.setExpandRatio(panel, 1.0f);
-
-
     }
 
     private Button createNavigationButton(String caption, final String viewName) {
@@ -59,6 +53,7 @@ public class MainView extends UI implements ViewDisplay {
         button.addClickListener(event -> getUI().getNavigator().navigateTo(viewName));
         return button;
     }
+
     @Override
     public void showView(View view) {
         panel.setContent((Component) view);

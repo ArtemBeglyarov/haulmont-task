@@ -1,16 +1,15 @@
-package test.task.haulmont.view;
+package test.task.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import test.task.haulmont.entity.Client;
-import test.task.haulmont.entity.Credit;
-import test.task.haulmont.entity.CreditOffer;
-import test.task.haulmont.entity.PaymentSchedule;
-import test.task.haulmont.operations.ClientOperations;
-import test.task.haulmont.operations.CreditOfferOperations;
-import test.task.haulmont.operations.PaymentOperations;
+import test.task.entity.Client;
+import test.task.entity.CreditOffer;
+import test.task.entity.PaymentSchedule;
+import test.task.operations.ClientOperations;
+import test.task.operations.CreditOfferOperations;
+import test.task.operations.PaymentOperations;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;

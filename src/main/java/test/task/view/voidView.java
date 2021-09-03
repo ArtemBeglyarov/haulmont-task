@@ -1,4 +1,4 @@
-package test.task.haulmont.view;
+package test.task.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;

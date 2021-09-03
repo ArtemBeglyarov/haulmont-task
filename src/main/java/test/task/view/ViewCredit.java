@@ -1,14 +1,14 @@
-package test.task.haulmont.view;
+package test.task.view;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import test.task.haulmont.entity.Bank;
-import test.task.haulmont.entity.Credit;
-import test.task.haulmont.operations.BankOperations;
-import test.task.haulmont.operations.CreditOperations;
+import test.task.entity.Credit;
+import test.task.entity.Bank;
+import test.task.operations.BankOperations;
+import test.task.operations.CreditOperations;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -52,7 +52,6 @@ public class ViewCredit extends VerticalLayout implements View {
     }
 
     private Window createUpdateCredit(){
-
         Credit credit = new Credit();
         Window window = new Window("Credit");
         VerticalLayout verticalWindow = new VerticalLayout();
@@ -67,8 +66,6 @@ public class ViewCredit extends VerticalLayout implements View {
         return getComponents(credit, window, verticalWindow);
     }
     private Window createUpdateCredit(Credit credit){
-
-
         Window window = new Window("Credit");
         VerticalLayout verticalWindow = new VerticalLayout();
         bankNativeSelect = new NativeSelect<Bank>("Select Bank",bankOperations.getAll());

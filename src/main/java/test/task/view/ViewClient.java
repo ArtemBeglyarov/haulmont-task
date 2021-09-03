@@ -1,15 +1,15 @@
-package test.task.haulmont.view;
+package test.task.view;
 
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.View;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import test.task.haulmont.entity.Bank;
-import test.task.haulmont.entity.Client;
-import test.task.haulmont.operations.BankOperations;
-import test.task.haulmont.operations.ClientOperations;
-import test.task.haulmont.operations.CreditOfferOperations;
+import test.task.entity.Client;
+import test.task.entity.Bank;
+import test.task.operations.BankOperations;
+import test.task.operations.ClientOperations;
+import test.task.operations.CreditOfferOperations;
 
 import javax.annotation.PostConstruct;
 import java.util.ArrayList;
@@ -56,7 +56,6 @@ public class ViewClient extends VerticalLayout implements View {
             getUI().getNavigator().navigateTo("Clients");
         }));
 
-
         add.setIcon(VaadinIcons.MALE);
         update.setIcon(VaadinIcons.MALE);
         find.setIcon(VaadinIcons.MALE);
@@ -66,7 +65,6 @@ public class ViewClient extends VerticalLayout implements View {
         find.setEnabled(false);
         update.setEnabled(false);
     }
-
 
     private Window createUpdateClient() {
 
@@ -91,7 +89,6 @@ public class ViewClient extends VerticalLayout implements View {
         passportNumber.setIcon(VaadinIcons.CLIPBOARD_USER);
         verticalWindow.addComponent(bankNativeSelect);
         bankNativeSelect.setIcon(VaadinIcons.PIGGY_BANK);
-
         return getComponents(client, window, verticalWindow, name, surname, patronymic, email, phone, passportNumber, banks, bankNativeSelect);
     }
 
@@ -117,7 +114,6 @@ public class ViewClient extends VerticalLayout implements View {
         verticalWindow.addComponent(bankNativeSelect);
         bankNativeSelect.setIcon(VaadinIcons.PIGGY_BANK);
         return getComponents(client, window, verticalWindow, name, surname, patronymic, email, phone, passportNumber, banks, bankNativeSelect);
-
     }
 
     private Window getComponents(Client client, Window window, VerticalLayout verticalWindow, TextField name, TextField surname, TextField patronymic, TextField email, TextField phone, TextField passportNumber, Set<Bank> banks, NativeSelect<Bank> bankNativeSelect) {
@@ -145,20 +141,6 @@ public class ViewClient extends VerticalLayout implements View {
         window.center();
         return window;
     }
-//    private Window deleteClient() {
-//        Window window = new Window("delete client");
-//        VerticalLayout verticalWindow = new VerticalLayout();
-//        window.setContent(verticalWindow);
-//        verticalWindow.addComponent(new TextField("input ID client"));
-//        HorizontalLayout horizontalLayout = new HorizontalLayout();
-//        horizontalLayout.addComponent(new Button("OK"));
-//        horizontalLayout.addComponent(new Button("CLOSE", event -> window.close()));
-//        verticalWindow.addComponent(horizontalLayout);
-//        window.center();
-//
-//        return window;
-
-//    }
 
     private Window findClient(Client client) {
 
@@ -189,9 +171,6 @@ public class ViewClient extends VerticalLayout implements View {
         grid.addColumn(Client::getSurname).setCaption("Surname");
         grid.addColumn(Client::getName).setCaption("Name");
         grid.addColumn(Client::getPatronymic).setCaption("Patronymic");
-//        grid.addColumn(Client::getNumberPhone).setCaption("Phone");
-//        grid.addColumn(Client::getEmail).setCaption("Email");
-//        grid.addColumn(Client::getPassportID).setCaption("Passport ID");
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
         grid.addSelectionListener(event -> {
             clients = new ArrayList<>(event.getAllSelectedItems());

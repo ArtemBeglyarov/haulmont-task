@@ -1,4 +1,4 @@
-package test.task.haulmont.entity;
+package test.task.entity;
 
 import com.sun.istack.NotNull;
 import lombok.Getter;

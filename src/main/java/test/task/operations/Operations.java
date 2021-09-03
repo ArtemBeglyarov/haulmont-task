@@ -1,4 +1,4 @@
-package test.task.haulmont.operations;
+package test.task.operations;
 
 import java.util.List;
 import java.util.UUID;

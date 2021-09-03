@@ -1,9 +1,9 @@
-package test.task.haulmont.operations;
+package test.task.operations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import test.task.haulmont.entity.Credit;
-import test.task.haulmont.repository.CreditRepository;
+import test.task.entity.Credit;
+import test.task.repository.CreditRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +33,7 @@ public class CreditOperations implements Operations<Credit> {
     public void deleteAll(List<Credit> credits) {
         creditRepository.deleteAll(credits);
     }
+
     public void delete(Credit credit) {
         creditRepository.delete(credit);
     }

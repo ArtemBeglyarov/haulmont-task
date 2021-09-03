@@ -1,4 +1,4 @@
-package test.task.haulmont.entity;
+package test.task.entity;
 
 import lombok.Getter;
 import lombok.Setter;
